@@ -1,13 +1,14 @@
-import { CeloTokenContract } from '@celo/contractkit/lib/base';
+import type { StrongAddress } from '@celo/base';
+import type { CeloTokenContract } from '@celo/contractkit/lib/base';
 import {
-  MiniContractKit,
+  type MiniContractKit,
   newKit,
   newKitFromWeb3,
 } from '@celo/contractkit/lib/mini-kit';
 
 import { WalletTypes } from '../constants';
-import { Connector, Network } from '../types';
-import { AbstractConnector, ConnectorEvents, Web3Type } from './common';
+import type { Connector, Network } from '../types';
+import { type Web3Type, AbstractConnector, ConnectorEvents } from './common';
 
 export default class CeloExtensionWalletConnector
   extends AbstractConnector
@@ -47,16 +48,16 @@ export default class CeloExtensionWalletConnector
 
     this.kit = newKitFromWeb3(web3 as unknown as Web3Type);
     const [defaultAccount] = await this.kit.connection.web3.eth.getAccounts();
-    this.kit.connection.defaultAccount = defaultAccount;
+    this.kit.connection.defaultAccount = defaultAccount as StrongAddress;
 
     this.initialised = true;
 
-    const walletChainId = (await celo.request!({
+    const walletChainId = (await celo.request?.({
       method: 'eth_chainId',
     })) as string;
 
     this.emit(ConnectorEvents.CONNECTED, {
-      walletChainId: parseInt(walletChainId, 16),
+      walletChainId: Number.parseInt(walletChainId, 16),
       walletType: WalletTypes.CeloExtensionWallet,
       address: defaultAccount,
       networkName: this.network.name,
@@ -67,7 +68,7 @@ export default class CeloExtensionWalletConnector
   continueNetworkUpdateFromWallet(network: Network): void {
     this.network = network; // must set to prevent loop
     const web3 = this.kit.connection.web3;
-    this.newKit(web3, this.account as string); // kit caches things so it need to be recreated
+    this.newKit(web3, this.account as StrongAddress); // kit caches things so it need to be recreated
     this.emit(ConnectorEvents.NETWORK_CHANGED, network.name);
   }
 
@@ -81,7 +82,7 @@ export default class CeloExtensionWalletConnector
     return false;
   }
 
-  private newKit(web3: Web3Type, defaultAccount: string) {
+  private newKit(web3: Web3Type, defaultAccount: `0x${string}`) {
     this.kit = newKitFromWeb3(web3 as unknown as Web3Type);
     this.kit.connection.defaultAccount = defaultAccount;
   }

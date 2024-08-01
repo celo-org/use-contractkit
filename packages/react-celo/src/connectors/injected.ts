@@ -1,3 +1,4 @@
+import type { StrongAddress } from '@celo/base';
 import { CeloTokenContract } from '@celo/contractkit/lib/base';
 import {
   MiniContractKit,
@@ -66,7 +67,7 @@ export default class InjectedConnector
     ethereum.on('chainChanged', this.onChainChanged);
     ethereum.on('accountsChanged', this.onAccountsChanged);
 
-    this.newKit(web3 as unknown as Web3Type, defaultAccount);
+    this.newKit(web3 as unknown as Web3Type, defaultAccount as StrongAddress);
 
     const walletChainId = await ethereum.request({ method: 'eth_chainId' });
 
@@ -82,7 +83,7 @@ export default class InjectedConnector
     return this;
   }
 
-  private newKit(web3: Web3Type, defaultAccount: string) {
+  private newKit(web3: Web3Type, defaultAccount: StrongAddress) {
     this.kit = newKitFromWeb3(web3 as unknown as Web3Type);
     this.kit.connection.defaultAccount = defaultAccount;
   }
@@ -97,7 +98,7 @@ export default class InjectedConnector
   continueNetworkUpdateFromWallet(network: Network): void {
     this.network = network; // must set to prevent loop
     const web3 = this.kit.connection.web3;
-    this.newKit(web3, this.account as string); // kit caches things so it need to be recreated
+    this.newKit(web3, this.account as StrongAddress); // kit caches things so it need to be recreated
     this.emit(ConnectorEvents.NETWORK_CHANGED, network.name);
   }
 
@@ -120,7 +121,7 @@ export default class InjectedConnector
       // wallet is locked properly close the connection.
       this.close();
     } else {
-      this.kit.connection.defaultAccount = accounts[0];
+      this.kit.connection.defaultAccount = accounts[0] as StrongAddress;
       this.emit(ConnectorEvents.ADDRESS_CHANGED, accounts[0]);
     }
   };

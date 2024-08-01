@@ -1,3 +1,4 @@
+import type { StrongAddress } from '@celo/base';
 import { CeloTokenContract } from '@celo/contractkit/lib/base';
 import { MiniContractKit, newKit } from '@celo/contractkit/lib/mini-kit';
 import {
@@ -124,7 +125,8 @@ export default class WalletConnectConnector
     } finally {
       this.kit = newKit(network.rpcUrl, wallet);
       // ensure we have a default account set
-      this.kit.connection.defaultAccount = wallet.getAccounts()[0];
+      this.kit.connection.defaultAccount =
+        wallet.getAccounts()[0] as StrongAddress;
     }
   }
 
@@ -285,7 +287,9 @@ export default class WalletConnectConnector
     }
     const accounts = await this.kit.contracts.getAccounts();
     const walletAddress = await accounts.getWalletAddress(address);
-    return new BigNumber(walletAddress).isZero() ? address : walletAddress;
+    return (
+      new BigNumber(walletAddress).isZero() ? address : walletAddress
+    ) as StrongAddress;
   }
 
   updateFeeCurrency: typeof updateFeeCurrency = updateFeeCurrency.bind(this);

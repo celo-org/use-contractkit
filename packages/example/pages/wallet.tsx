@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { trimLeading0x } from '@celo/base';
 import { StableToken } from '@celo/contractkit/lib/celo-tokens';
-import { newKitFromWeb3 } from '@celo/contractkit/lib/mini-kit';
-import { Alfajores } from '@celo/react-celo';
+import { newKit } from '@celo/contractkit/lib/mini-kit';
+import { Alfajores as Alfajores_, Network } from '@celo/react-celo';
 import { EIP712TypedData } from '@celo/utils/lib/sign-typed-data-utils';
 import { SupportedMethods } from '@celo/wallet-walletconnect';
 import { Core } from '@walletconnect/core';
@@ -24,9 +26,11 @@ const core = new Core({
   projectId: WALLET_CONNECT_PROJECT_ID,
 });
 
-const web3 = new Web3(Alfajores.rpcUrl);
-const kit = newKitFromWeb3(web3);
-const account = web3.eth.accounts.privateKeyToAccount(
+const Alfajores: Network = Alfajores_ as Network;
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+const kit = newKit(Alfajores.rpcUrl);
+const account = kit.connection.web3.eth.accounts.privateKeyToAccount(
   'e2d7138baa3a5600ac37984e40981591d7cf857bcadd7dc6f7d14023a17b0787'
 );
 kit.connection.addAccount(account.privateKey);
@@ -280,6 +284,7 @@ export default function Wallet(): React.ReactElement {
       id,
       params: { request, chainId },
     }: Web3WalletTypes.SessionRequest): void | Promise<void> => {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       if (chainId !== `eip155:${Alfajores.chainId}`) {
         return walletConnectWallet?.rejectSession({
           id,

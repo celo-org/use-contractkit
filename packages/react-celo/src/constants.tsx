@@ -256,11 +256,10 @@ export const NetworkNames = {
   Alfajores: 'Alfajores' as const,
   Baklava: 'Baklava' as const,
   Mainnet: 'Mainnet' as const,
-  Cannoli: 'Cannoli' as const,
   Localhost: 'Localhost' as const,
 };
 
-export const Alfajores: Network = {
+export const Alfajores = {
   name: NetworkNames.Alfajores,
   rpcUrl: 'https://alfajores-forno.celo-testnet.org',
   graphQl: 'https://explorer.celo.org/alfajores/graphiql',
@@ -274,14 +273,6 @@ export const Baklava: Network = {
   graphQl: 'https://explorer.celo.org/baklava/graphiql',
   explorer: 'https://explorer.celo.org/baklava',
   chainId: ChainId.Baklava,
-} as const;
-
-export const Cannoli: Network = {
-  name: NetworkNames.Cannoli,
-  rpcUrl: 'https://forno.cannoli.celo-testnet.org',
-  graphQl: 'https://explorer.celo.org/cannoli/graphiql',
-  explorer: 'https://explorer.celo.org/cannoli',
-  chainId: ChainId.Cannoli,
 } as const;
 
 export const Mainnet: Network = {
@@ -323,7 +314,6 @@ export const DEFAULT_NETWORKS: Network[] = [
   Mainnet,
   Alfajores,
   Baklava,
-  Cannoli,
   ...(process.env.NODE_ENV !== 'production' ? [Localhost] : []),
 ];
 

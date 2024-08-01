@@ -1,10 +1,15 @@
-import { CeloTokenContract } from '@celo/contractkit/lib/base';
-import { MiniContractKit, newKit } from '@celo/contractkit/lib/mini-kit';
-import { LedgerWallet, newLedgerWalletWithSetup } from '@celo/wallet-ledger';
+import type { CeloTokenContract } from '@celo/contractkit/lib/base';
+import type { StrongAddress } from '@celo/base';
+
+import { type MiniContractKit, newKit } from '@celo/contractkit/lib/mini-kit';
+import {
+  type LedgerWallet,
+  newLedgerWalletWithSetup,
+} from '@celo/wallet-ledger';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 
 import { WalletTypes } from '../constants';
-import { Connector, Network } from '../types';
+import type { Connector, Network } from '../types';
 import {
   AbstractConnector,
   ConnectorEvents,
@@ -40,7 +45,8 @@ export default class LedgerConnector
 
   private async createKit(wallet: LedgerWallet, network: Network) {
     this.kit = newKit(network.rpcUrl, wallet);
-    this.kit.connection.defaultAccount = wallet.getAccounts()[0];
+    this.kit.connection.defaultAccount =
+      wallet.getAccounts()[0] as StrongAddress;
     if (this.feeCurrency) {
       await this.updateFeeCurrency(this.feeCurrency);
     }

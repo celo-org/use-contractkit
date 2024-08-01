@@ -62,7 +62,6 @@ export class MockWalletConnectClient extends EventEmitter {
           chains: [
             'eip155:44787', // alajores
             'eip155:42220', // celo
-            'eip155:17323', // cannoli
             'eip155:62320', // baklava
           ],
           methods: Object.values(SupportedMethods),

@@ -13,7 +13,6 @@ export type Maybe<T> = T | null | undefined;
 export enum ChainId {
   Alfajores = 44787,
   Baklava = 62320,
-  Cannoli = 17323,
   Mainnet = 42220,
 }
 /**

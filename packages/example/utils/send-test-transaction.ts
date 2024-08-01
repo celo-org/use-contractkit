@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { UseCelo } from '@celo/react-celo';
 import Web3 from 'web3';
 
@@ -14,7 +17,6 @@ export async function sendTestTransaction(
       )
       .sendAndWaitForReceipt({
         from: k.connection.defaultAccount,
-        gasPrice: k.connection.defaultGasPrice,
       });
   });
 }

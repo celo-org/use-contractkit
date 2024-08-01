@@ -1,20 +1,24 @@
-import { CeloContract, CeloTokenContract } from '@celo/contractkit/lib/base';
+import type { StrongAddress } from '@celo/base';
 import {
-  MiniContractKit,
+  type CeloTokenContract,
+  CeloContract,
+} from '@celo/contractkit/lib/base';
+import {
+  type MiniContractKit,
   newKit,
   newKitFromWeb3,
 } from '@celo/contractkit/lib/mini-kit';
 import {
-  CoinbaseWalletProvider,
+  type CoinbaseWalletProvider,
   CoinbaseWalletSDK,
 } from '@coinbase/wallet-sdk';
 
 import { WalletTypes } from '../constants';
-import { Ethereum } from '../global';
-import { Connector, Dapp, Network } from '../types';
+import type { Ethereum } from '../global';
+import type { Connector, Dapp, Network } from '../types';
 import { getApplicationLogger } from '../utils/logger';
 import { switchToNetwork } from '../utils/metamask';
-import { AbstractConnector, ConnectorEvents, Web3Type } from './common';
+import { type Web3Type, AbstractConnector, ConnectorEvents } from './common';
 
 export default class CoinbaseWalletConnector
   extends AbstractConnector
@@ -70,7 +74,7 @@ export default class CoinbaseWalletConnector
     const { default: Web3 } = await import('web3');
     const web3 = new Web3(this.provider);
 
-    const [defaultAccount]: string[] = await this.provider.request({
+    const [defaultAccount]: StrongAddress[] = await this.provider.request({
       method: 'eth_requestAccounts',
     });
 
@@ -101,7 +105,7 @@ export default class CoinbaseWalletConnector
 
     this.emit(ConnectorEvents.CONNECTED, {
       walletType: this.type,
-      walletChainId: parseInt(walletChainId, 16),
+      walletChainId: Number.parseInt(walletChainId, 16),
       networkName: this.network.name,
       address: defaultAccount,
     });
@@ -110,7 +114,7 @@ export default class CoinbaseWalletConnector
   }
 
   private onChainChanged = (chainIdHex: string) => {
-    const chainId = parseInt(chainIdHex, 16);
+    const chainId = Number.parseInt(chainIdHex, 16);
     if (this.network.chainId !== chainId) {
       this.emit(ConnectorEvents.WALLET_CHAIN_CHANGED, chainId);
     }
@@ -123,13 +127,13 @@ export default class CoinbaseWalletConnector
     }
   }
 
-  private newKit(web3: Web3Type, defaultAccount: string) {
+  private newKit(web3: Web3Type, defaultAccount: StrongAddress) {
     this.kit = newKitFromWeb3(web3 as unknown as Web3Type);
     this.kit.connection.defaultAccount = defaultAccount;
     return this.kit;
   }
 
-  private onAccountsChanged = (accounts: string[]) => {
+  private onAccountsChanged = (accounts: StrongAddress[]) => {
     if (accounts[0]) {
       this.kit.connection.defaultAccount = accounts[0];
       this.emit(ConnectorEvents.ADDRESS_CHANGED, accounts[0]);
@@ -151,7 +155,7 @@ export default class CoinbaseWalletConnector
   continueNetworkUpdateFromWallet(network: Network): void {
     this.network = network; // must set to prevent loop
     const web3 = this.kit.connection.web3;
-    this.newKit(web3, this.account as string); // kit caches things so it need to be recreated
+    this.newKit(web3, this.account as StrongAddress); // kit caches things so it need to be recreated
     this.emit(ConnectorEvents.NETWORK_CHANGED, network.name);
   }
 

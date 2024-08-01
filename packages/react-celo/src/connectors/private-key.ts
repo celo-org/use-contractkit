@@ -1,3 +1,4 @@
+import type { StrongAddress } from '@celo/base';
 import { CeloTokenContract } from '@celo/contractkit/lib/base';
 import { MiniContractKit, newKit } from '@celo/contractkit/lib/mini-kit';
 import { LocalWallet } from '@celo/wallet-local';
@@ -54,7 +55,8 @@ export default class PrivateKeyConnector
 
   private newKit(network: Network) {
     const kit = newKit(network.rpcUrl, this.wallet);
-    kit.connection.defaultAccount = this.wallet.getAccounts()[0];
+    kit.connection.defaultAccount =
+      this.wallet.getAccounts()[0] as StrongAddress;
     return kit;
   }
 

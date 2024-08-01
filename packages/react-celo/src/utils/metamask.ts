@@ -2,7 +2,7 @@ import { newKit } from '@celo/contractkit/lib/mini-kit';
 import { GoldTokenWrapper } from '@celo/contractkit/lib/wrappers/GoldTokenWrapper';
 import { StableTokenWrapper } from '@celo/contractkit/lib/wrappers/StableTokenWrapper';
 
-import { Alfajores, Baklava, Cannoli, Mainnet } from '../constants';
+import { Alfajores, Baklava, Mainnet } from '../constants';
 import { Ethereum } from '../global';
 import { CeloNetwork, ChainId, Network } from '../types';
 
@@ -30,25 +30,15 @@ const BAKLAVA_PARAMS = Object.freeze({
   },
 });
 
-const CANNOLI_PARAMS = Object.freeze({
-  chainName: 'Cannoli Testnet',
-  testnet: true,
-  nativeCurrency: {
-    name: 'C-CELO',
-  },
-});
-
 type CHAIN_PARAMS =
   | typeof CELO_PARAMS
   | typeof ALFAJORES_PARAMS
-  | typeof BAKLAVA_PARAMS
-  | typeof CANNOLI_PARAMS;
+  | typeof BAKLAVA_PARAMS;
 
 const PARAMS: { [chain in ChainId]: CHAIN_PARAMS } = {
   [ChainId.Mainnet]: CELO_PARAMS,
   [ChainId.Alfajores]: ALFAJORES_PARAMS,
   [ChainId.Baklava]: BAKLAVA_PARAMS,
-  [ChainId.Cannoli]: CANNOLI_PARAMS,
 };
 
 // First Class Supported Networks
@@ -56,7 +46,6 @@ const NETWORKS = {
   [ChainId.Mainnet]: Mainnet,
   [ChainId.Alfajores]: Alfajores,
   [ChainId.Baklava]: Baklava,
-  [ChainId.Cannoli]: Cannoli,
 };
 
 export interface ERC20Token {
