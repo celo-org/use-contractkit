@@ -1,6 +1,6 @@
 {
   "name": "example",
-  "version": "5.0.5-dev",
+  "version": "5.0.6",
   "private": true,
   "scripts": {
     "build": "next build",
@@ -15,9 +15,9 @@
   "license": "MIT",
   "dependencies": {
     "@celo/contractkit": "^8.1.0",
-    "@celo/react-celo": "5.0.5-dev",
+    "@celo/react-celo": "5.0.6",
     "@celo/utils": "^7.0.0",
-    "@celo/wallet-walletconnect": "5.0.5-dev",
+    "@celo/wallet-walletconnect": "5.0.6",
     "@walletconnect/core": "^2.7.3",
     "@walletconnect/sign-client": "^2.7.3",
     "@walletconnect/types": "^2.7.3",

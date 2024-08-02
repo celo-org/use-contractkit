@@ -1,6 +1,5 @@
-import type { CeloTokenContract } from '@celo/contractkit/lib/base';
 import type { StrongAddress } from '@celo/base';
-
+import type { CeloTokenContract } from '@celo/contractkit/lib/base';
 import { type MiniContractKit, newKit } from '@celo/contractkit/lib/mini-kit';
 import {
   type LedgerWallet,
